@@ -1,4 +1,5 @@
 import PageLayouts from "@/components/Layouts";
+import AdminPageLayouts from "@/components/Layouts/Admin";
 
 export default function AdminDashboardLayout({
   children,
@@ -6,8 +7,8 @@ export default function AdminDashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <PageLayouts>
-      <section className="h-content">{children}</section>
-    </PageLayouts>
+    <AdminPageLayouts>
+      <section className="min-h-content">{children}</section>
+    </AdminPageLayouts>
   );
 }
