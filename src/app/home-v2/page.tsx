@@ -1,5 +1,3 @@
-import type { Metadata } from "next";
-import { APP_INFO } from "@/lib/const";
 import KeyFeatures from "@/components/Home/KeyFeatures";
 import HowToUse from "@/components/Home/HowToUse";
 import CustomerReviews from "@/components/Home/CustomerReviews";
@@ -8,11 +6,6 @@ import PricingSection from "@/components/Home/Pricing";
 import BannerNew from "@/components/Home/v2/BannerParallax";
 import IntroductionV2 from "@/components/Home/v2/IntroductionV2";
 import PageLayouts from "@/components/Layouts";
-
-export const metadata: Metadata = {
-  title: APP_INFO.appName,
-  description: APP_INFO.appDesc ?? "",
-};
 
 export default function HomeV2() {
   return (

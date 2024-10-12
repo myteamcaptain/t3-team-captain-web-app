@@ -1,7 +1,5 @@
 import Image from "next/image";
 import Wrapper from "@/components/Generals/Wrapper";
-import { getAppNameAbv } from "@/lib/helperFn";
-import type { Metadata } from "next";
 import {
   Card,
   CardContent,
@@ -17,10 +15,6 @@ import { LucideMail } from "lucide-react";
 import { BUSINESS_EMAIL } from "@/lib/const";
 import TriangleBottomShape from "@/components/Generals/TriangleBottomShape";
 import PageLayouts from "@/components/Layouts";
-
-export const metadata: Metadata = {
-  title: getAppNameAbv("Contact Us"),
-};
 
 export default function ContactUs() {
   return (

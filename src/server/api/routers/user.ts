@@ -7,8 +7,8 @@ import {
 } from "@/server/api/trpc";
 
 export const userRouter = createTRPCRouter({
-  info: publicProcedure.query(({ ctx, input }) => {
-    //const { userId } = ctx.auth;
-    return "okay";
+  info: protectedProcedure.query(({ ctx, input }) => {
+    const { userId } = ctx.auth;
+    return userId;
   }),
 });

@@ -1,7 +1,5 @@
 import Wrapper from "@/components/Generals/Wrapper";
-import { getAppNameAbv } from "@/lib/helperFn";
 import parse from "html-react-parser";
-import type { Metadata } from "next";
 import {
   Accordion,
   AccordionContent,
@@ -11,9 +9,6 @@ import {
 import { FAQ_LIST } from "@/lib/const";
 import type { FaqTypes } from "@/lib/types";
 import PageLayouts from "@/components/Layouts";
-export const metadata: Metadata = {
-  title: getAppNameAbv("Frequently Ask Questions"),
-};
 
 export default function FAQPage() {
   return (
