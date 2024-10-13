@@ -10,7 +10,8 @@ import {
   timestamp,
   varchar,
 } from "drizzle-orm/pg-core";
-
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
+import { z } from "zod";
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
  * database instance for multiple projects.
@@ -39,10 +40,11 @@ export const posts = createTable(
 export const users = createTable(
   "users",
   {
-    userId: serial("user_id").primaryKey(),
+    userId: varchar("user_id").primaryKey(),
     firstname: varchar("firstname", { length: 256 }),
     lastname: varchar("lastname", { length: 256 }),
     email: varchar("email", { length: 256 }),
+    emailStatus: varchar("email_status", { length: 256 }),
     profile: varchar("profile", { length: 256 }),
     isDeleted: boolean("is_deleted").default(false),
     createdAt: timestamp("created_at", { withTimezone: true })
@@ -56,3 +58,7 @@ export const users = createTable(
     userIdUnq: index("user_id_unq").on(user.userId),
   }),
 );
+
+export const insertUserSchema = createInsertSchema(users);
+export const userSchema = createSelectSchema(users);
+export type InsertUser = z.infer<typeof insertUserSchema>;

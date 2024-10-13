@@ -18,6 +18,7 @@ import { useAuth, useUser } from "@clerk/nextjs";
 import { NavigationTypeComp } from "./NavigationMenu";
 import { NAVIGATION_MENU_AUTH } from "@/lib/const";
 import ToogleTheme from "./ToogleTheme";
+import Link from "next/link";
 
 export default function UserDetails() {
   const { isSignedIn, isLoaded: isAuthLoaded, signOut } = useAuth();
@@ -44,6 +45,9 @@ export default function UserDetails() {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
+            <Link href="/admin">
+              <DropdownMenuItem>Dashboard</DropdownMenuItem>
+            </Link>
             <DropdownMenuItem>Profile</DropdownMenuItem>
             <DropdownMenuItem>Settings</DropdownMenuItem>
             <DropdownMenuItem>Appearance</DropdownMenuItem>
