@@ -41,6 +41,7 @@ export const users = createTable(
   "users",
   {
     userId: varchar("user_id").primaryKey(),
+    username: varchar("username", { length: 256 }),
     firstname: varchar("firstname", { length: 256 }),
     lastname: varchar("lastname", { length: 256 }),
     email: varchar("email", { length: 256 }),

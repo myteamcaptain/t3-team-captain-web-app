@@ -1,4 +1,9 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import {
+  clerkClient,
+  clerkMiddleware,
+  createRouteMatcher,
+} from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
 
 const isPublicRoute = createRouteMatcher([
   "/",
@@ -15,11 +20,31 @@ const isPublicRoute = createRouteMatcher([
 ]);
 
 const isAuthRoute = createRouteMatcher(["/auth/login(.*)", "/auth/create(.*)"]);
-export default clerkMiddleware((auth, request) => {
+const isRequireProfile = createRouteMatcher(["/admin/profile/required(.*)"]);
+export default clerkMiddleware(async (auth, request) => {
   const { sessionClaims, userId, sessionId, redirectToSignIn } = auth();
   const isAuthenticated = !!(userId && sessionId);
   if (!isPublicRoute(request)) {
     auth().protect();
+  }
+  if (
+    isAuthenticated &&
+    !isPublicRoute(request) &&
+    !isRequireProfile(request)
+  ) {
+    const userDetails = await clerkClient().users.getUser(userId);
+    if (
+      !userDetails.firstName ||
+      !userDetails.lastName ||
+      !userDetails.username
+    ) {
+      const profileRequiredUrl = new URL(
+        `/admin/profile/required`,
+        request.url,
+      );
+      return Response.redirect(profileRequiredUrl);
+    }
+    return NextResponse.next();
   }
   if (isAuthenticated && isAuthRoute(request)) {
     const dashboardUrl = new URL(`/admin`, request.url);
