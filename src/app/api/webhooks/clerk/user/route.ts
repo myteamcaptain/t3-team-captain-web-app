@@ -1,25 +1,11 @@
 import { db } from "@/server/db";
 import { users } from "@/server/db/schema";
-import {
-  UserWebhookEvent,
-  WebhookEvent,
-  WebhookEventType,
-} from "@clerk/nextjs/server";
+import { UserWebhookEvent, WebhookEventType } from "@clerk/nextjs/server";
 import { UserJSON } from "@clerk/types";
-import { eq } from "drizzle-orm";
 import { updateUser } from "./userDbFn";
 
 export const runtime = "nodejs";
-const HANDLER = async (req: Request) => {
-  if (req.method != "POST") {
-    return Response.json(
-      {
-        message: "UNAUTHORIZED ACCESS",
-      },
-      { status: 401 },
-    );
-  }
-
+export async function POST(req: Request) {
   const eventData = (await req.json()) as UserWebhookEvent;
   const eventType = eventData.type as WebhookEventType;
   const data = eventData.data as unknown as UserJSON;
@@ -80,6 +66,4 @@ const HANDLER = async (req: Request) => {
       status: 200,
     },
   );
-};
-
-export { HANDLER as GET, HANDLER as POST };
+}
