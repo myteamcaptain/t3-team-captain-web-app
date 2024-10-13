@@ -1,6 +1,8 @@
-export const runtime = "edge";
+import { NextRequest } from "next/server";
 
-export async function POST(request: Request) {
+export const runtime = "force-dynamic";
+
+const handler = (req: NextRequest) => {
   return Response.json(
     {
       message: "success",
@@ -9,4 +11,6 @@ export async function POST(request: Request) {
       status: 200,
     },
   );
-}
+};
+
+export { handler as GET, handler as POST };
