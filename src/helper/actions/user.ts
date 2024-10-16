@@ -1,5 +1,8 @@
 import { getError } from "@/utils/error";
 
+import { toast } from "@/hooks/use-toast";
+import { ToastAction } from "@/components/ui/toast";
+import Link from "next/link";
 interface UpdateUserInfoProps {
   userId: string;
   firstName: string;
@@ -18,9 +21,17 @@ export async function updateUserInfo({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId, firstName, lastName, username }),
     });
+
     return await result.json();
   } catch (err: unknown) {
     console.log(err);
-    return getError(err);
+
+    const error = getError(err, "Encounter a problem: ");
+    toast({
+      variant: "destructive",
+      title: "Failed to update!",
+      description: error.message,
+    });
+    return error;
   }
 }

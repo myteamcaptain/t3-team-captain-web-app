@@ -1,65 +1,20 @@
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
-import { sql } from "drizzle-orm";
-import {
-  boolean,
-  index,
-  pgTableCreator,
-  serial,
-  timestamp,
-  varchar,
-} from "drizzle-orm/pg-core";
-import { createInsertSchema, createSelectSchema } from "drizzle-zod";
-import { z } from "zod";
+import * as users from "./schema/users";
+import * as posts from "./schema/post";
+import * as registeredWhatsappNumbers from "./schema/registeredWhatsappNumbers";
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
  * database instance for multiple projects.
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
-export const createTable = pgTableCreator((name) => `team-captain-${name}`);
 
-export const posts = createTable(
-  "post",
-  {
-    id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }),
-    createdAt: timestamp("created_at", { withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
-      () => new Date(),
-    ),
-  },
-  (example) => ({
-    nameIndex: index("name_idx").on(example.name),
-  }),
-);
+//export { createTable as tableCreator } from "./schema/_table";
 
-export const users = createTable(
-  "users",
-  {
-    userId: varchar("user_id").primaryKey(),
-    username: varchar("username", { length: 256 }),
-    firstname: varchar("firstname", { length: 256 }),
-    lastname: varchar("lastname", { length: 256 }),
-    email: varchar("email", { length: 256 }),
-    emailStatus: varchar("email_status", { length: 256 }),
-    profile: varchar("profile", { length: 256 }),
-    isDeleted: boolean("is_deleted").default(false),
-    createdAt: timestamp("created_at", { withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
-      () => new Date(),
-    ),
-  },
-  (user) => ({
-    userIdUnq: index("user_id_unq").on(user.userId),
-  }),
-);
-
-export const insertUserSchema = createInsertSchema(users);
-export const userSchema = createSelectSchema(users);
-export type InsertUser = z.infer<typeof insertUserSchema>;
+export const schema = {
+  ...users,
+  ...registeredWhatsappNumbers,
+  ...posts,
+};

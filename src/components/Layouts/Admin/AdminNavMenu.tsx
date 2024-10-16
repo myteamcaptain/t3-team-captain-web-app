@@ -17,7 +17,7 @@ import {
 const schedules: { title: string; href: string; description: string }[] = [
   {
     title: "Create Schedule",
-    href: "/docs/primitives/alert-dialog",
+    href: "/admin/schedule/create",
     description:
       "A modal dialog that interrupts the user with important content and expects a response.",
   },

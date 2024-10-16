@@ -54,9 +54,9 @@ export default function UserDetails() {
             <DropdownMenuItem>Support</DropdownMenuItem>
             <DropdownMenuItem>Light Mode</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <Button onClick={() => signOut()} variant="ghost">
-              <DropdownMenuItem>Logout</DropdownMenuItem>
-            </Button>
+            <DropdownMenuItem onClick={() => signOut()}>
+              Logout
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )}

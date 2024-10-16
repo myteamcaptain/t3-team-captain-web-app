@@ -25,8 +25,11 @@ import {
 
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
-import { useAuth } from "@clerk/nextjs";
+import { useAuth, useUser } from "@clerk/nextjs";
 import { updateUserInfo } from "@/helper/actions/user";
+import { ToastAction } from "@/components/ui/toast";
+import Link from "next/link";
+import { useEffect } from "react";
 
 const FormSchema = z.object({
   username: z.string().min(2, {
@@ -41,7 +44,9 @@ const FormSchema = z.object({
 });
 
 export default function UserUpdateForm() {
-  const { userId } = useAuth();
+  const { user } = useUser();
+  const userId = user?.id;
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -51,27 +56,38 @@ export default function UserUpdateForm() {
     },
   });
 
+  useEffect(() => {
+    if (user) {
+      const username = user?.username ?? "";
+      const firstName = user?.firstName ?? "";
+      const lastName = user?.lastName ?? "";
+      form.setValue("username", username, { shouldValidate: true });
+      form.setValue("firstname", firstName, { shouldValidate: true });
+      form.setValue("lastname", lastName, { shouldValidate: true });
+    }
+  }, [user]);
+
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log();
     const { firstname, lastname, username } = data;
 
     if (!userId) return;
-    const userInfo = await updateUserInfo({
+    const result = await updateUserInfo({
       userId,
       firstName: firstname,
       lastName: lastname,
       username,
     });
-
-    console.log("userInfo", userInfo);
-    // toast({
-    //   title: "You submitted the following values:",
-    //   description: (
-    //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-    //       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-    //     </pre>
-    //   ),
-    // });
+    if (result instanceof Error) return;
+    toast({
+      title: "Update successfull!",
+      description:
+        "You have successfully updated your user profile. Click to go to dashboard.",
+      action: (
+        <Link href="/admin">
+          <ToastAction altText="Goto schedule to undo">Dashboard</ToastAction>
+        </Link>
+      ),
+    });
   }
 
   return (

@@ -12,8 +12,10 @@ import AdminBreadcrump from "@/components/Layouts/Admin/AdminBreadcrump";
 export default function AdminPage() {
   return (
     <div>
-      <Wrapper className="flex flex-col">
-        <AdminBreadcrump />
+      <Wrapper className="flex flex-col space-y-4">
+        <div className="w-full">
+          <h2 className="text-3xl font-semibold tracking-tight">Dashboard</h2>
+        </div>
         <div className="w-full space-y-8">
           <div className="ween-bet grid w-full grid-cols-3 gap-4">
             <div className="">
