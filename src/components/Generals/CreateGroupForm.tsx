@@ -1,21 +1,28 @@
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import AddParticipants from "../AdminComponents/Schedule/AddParticipants";
+import { useAppSelector } from "@/store/hooks";
+import { useDispatch } from "react-redux";
+import { setGroupChatName } from "@/store/reducer/whapiSlice";
+
 export default function CreateGroupForm() {
+  const whapi = useAppSelector((state) => state.whapi);
+  const dispatch = useDispatch();
+
   return (
     <div className="grid gap-4 py-4">
-      <div className="grid grid-cols-4 items-center gap-4">
-        <Label htmlFor="name" className="text-right">
-          Name
+      <div className="flex flex-col space-y-2">
+        <Label htmlFor="name" className="text-left">
+          Whatsapp Group Name
         </Label>
-        <Input id="name" value="Pedro Duarte" className="col-span-3" />
+        <Input
+          id="name"
+          value={whapi.groupChatName}
+          className="col-span-3"
+          onChange={(e) => dispatch(setGroupChatName(e.target.value))}
+        />
       </div>
-      <div className="grid grid-cols-4 items-center gap-4">
-        <Label htmlFor="username" className="text-right">
-          Username
-        </Label>
-        <Input id="username" value="@peduarte" className="col-span-3" />
-      </div>
+      <AddParticipants />
     </div>
   );
 }

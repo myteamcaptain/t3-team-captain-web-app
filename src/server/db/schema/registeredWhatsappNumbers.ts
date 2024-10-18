@@ -9,7 +9,7 @@ export const registeredWhatsappNumbers = createTable(
   {
     id: serial("id").primaryKey(),
     userId: varchar("user_id").references(() => users.userId),
-    phoneNumber: varchar("user_id").references(() => users.userId),
+    phoneNumber: varchar("phone_number"),
     isActive: boolean("is_active").default(true),
     isDeleted: boolean("is_deleted").default(false),
     createdAt: timestamp("created_at", { withTimezone: true })

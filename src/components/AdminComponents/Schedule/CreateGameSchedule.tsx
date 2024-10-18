@@ -24,10 +24,13 @@ import Link from "next/link";
 import RegisterPhone from "../Profile/RegisterPhone";
 import CreateWhatsappGroup from "../Profile/CreateWhatsappGroup";
 import { FormDescription } from "@/components/ui/form";
-import { LucideCircleHelp } from "lucide-react";
+import { LucideCircleHelp, LucideRotate3D, LucideRotateCw } from "lucide-react";
 import { InfoTooltip } from "@/components/Generals/InfoTooltip";
+import { api, RouterOutputs } from "@/trpc/react";
 
 export function CreateGameSchedule() {
+  const { data: list, isLoading: isListLoading } =
+    api.registeredNumber.list.useQuery();
   return (
     <Card className="w-[550px]">
       <CardHeader>
@@ -41,7 +44,12 @@ export function CreateGameSchedule() {
           <div className="grid w-full items-center gap-8">
             <div className="flex flex-col space-y-2">
               <div className="flex justify-between">
-                <Label htmlFor="framework">Select phone number</Label>
+                <Label htmlFor="phone-number" className="flex space-x-2">
+                  <p>Select phone number </p>
+                  {isListLoading && (
+                    <LucideRotateCw size={16} className="animate-spin" />
+                  )}
+                </Label>
                 <InfoTooltip
                   compTrigger={<LucideCircleHelp size={16} />}
                   content={
@@ -54,26 +62,36 @@ export function CreateGameSchedule() {
               </div>
 
               <Select>
-                <SelectTrigger id="framework">
-                  <SelectValue placeholder="Select" />
+                <SelectTrigger id="phone-number">
+                  <SelectValue
+                    placeholder={isListLoading ? "Loading..." : "Select"}
+                  />
                 </SelectTrigger>
                 <SelectContent position="popper">
-                  <SelectItem value="next">Next.js</SelectItem>
-                  <SelectItem value="sveltekit">SvelteKit</SelectItem>
-                  <SelectItem value="astro">Astro</SelectItem>
-                  <SelectItem value="nuxt">Nuxt.js</SelectItem>
+                  {list?.map(
+                    (
+                      phoneItem: RouterOutputs["registeredNumber"]["list"][0],
+                      phoneIndex: number,
+                    ) => (
+                      <SelectItem key={phoneIndex} value="next">
+                        {phoneItem.phoneNumber}
+                      </SelectItem>
+                    ),
+                  )}
                 </SelectContent>
               </Select>
-              <p className="text-xs dark:text-slate-600">
-                You did not register any phone number. Register{" "}
-                <RegisterPhone
-                  triggerComponent={
-                    <span className="cursor-pointer p-0 text-primary hover:underline">
-                      here
-                    </span>
-                  }
-                />
-              </p>
+              {list?.length == 0 && (
+                <p className="text-xs dark:text-slate-600">
+                  You did not register any phone number. Register{" "}
+                  <RegisterPhone
+                    triggerComponent={
+                      <span className="cursor-pointer p-0 text-primary hover:underline">
+                        here
+                      </span>
+                    }
+                  />
+                </p>
+              )}
             </div>
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="name">Choose Whatsapp Group</Label>

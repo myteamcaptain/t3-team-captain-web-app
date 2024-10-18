@@ -2,7 +2,7 @@ import Wrapper from "@/components/Generals/Wrapper";
 
 export default function Loading() {
   return (
-    <div className="flex h-[calc()] w-full items-center justify-center">
+    <div className="h-[calc(h-screen - h-20)] flex w-full items-center justify-center">
       <div role="status w-full ">
         <svg
           aria-hidden="true"

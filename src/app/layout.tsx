@@ -4,7 +4,9 @@ import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { TRPCReactProvider } from "@/trpc/react";
+
 import { Toaster } from "@/components/ui/toaster";
+import { Providers } from "@/store/provider";
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -24,17 +26,19 @@ export default async function RootLayout({
             fontSans.variable,
           )}
         >
-          <TRPCReactProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="dark"
-              enableSystem
-              disableTransitionOnChange
-            >
-              {children}
-            </ThemeProvider>
-          </TRPCReactProvider>
-          <Toaster />
+          <Providers>
+            <TRPCReactProvider>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="dark"
+                enableSystem
+                disableTransitionOnChange
+              >
+                {children}
+              </ThemeProvider>
+            </TRPCReactProvider>
+            <Toaster />
+          </Providers>
         </body>
       </html>
     </ClerkProvider>

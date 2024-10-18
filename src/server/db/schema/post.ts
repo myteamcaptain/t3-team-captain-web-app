@@ -2,7 +2,7 @@ import { index, serial, timestamp, varchar } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 import { createTable } from "./_table";
 
-export const posts = createTable(
+export const post = createTable(
   "post",
   {
     id: serial("id").primaryKey(),

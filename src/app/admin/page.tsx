@@ -27,12 +27,19 @@ export default function AdminPage() {
             <LatestScheduleMonitoring cardTitle="Latest Game Schedule Monitoring" />
             <LatestScheduleMonitoring cardTitle="Last Game Schedule Attendee" />
           </div>
-          <div className="flex w-full space-x-4">
-            <div className="basis-1/2">
-              <CreateScheduleCard />
+          <div className="space-y-4">
+            <div className="w-full">
+              <h2 className="text-3xl font-semibold tracking-tight">
+                Features
+              </h2>
             </div>
-            <div className="basis-1/2">
-              <CheckGameScheduleCard />
+            <div className="flex w-full space-x-4">
+              <div className="basis-1/2">
+                <CreateScheduleCard />
+              </div>
+              <div className="basis-1/2">
+                <CheckGameScheduleCard />
+              </div>
             </div>
           </div>
         </div>
