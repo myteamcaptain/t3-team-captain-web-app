@@ -1,5 +1,6 @@
 import { db } from "@/server/db";
-import { InsertUser, users } from "@/server/db/schema";
+import { schema } from "@/server/db/schema";
+import { InsertUser } from "@/server/db/schema/users";
 import { throwError } from "@/utils/error";
 import { eq } from "drizzle-orm";
 
@@ -18,10 +19,10 @@ export const updateUser = async ({
     if (!exist) return throwError(new Error("User does not exist."));
 
     const result = await db
-      .update(users)
+      .update(schema.users)
       .set(data)
-      .where(eq(users.userId, userId))
-      .returning({ insertedId: users.userId });
+      .where(eq(schema.users.userId, userId))
+      .returning({ insertedId: schema.users.userId });
 
     return result;
   } catch (error) {

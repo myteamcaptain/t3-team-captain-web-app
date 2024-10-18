@@ -68,8 +68,8 @@ export default function RegisterPhone({
         text: "Verify & Add Phone",
         icon: <LucidePhone size={20} />,
         isLoading,
+        onSubmit: verifyPhoneHandler,
       }}
-      handleSubmit={verifyPhoneHandler}
     >
       <div className="mt-10 grid gap-4 py-5">
         {errorMsg && (

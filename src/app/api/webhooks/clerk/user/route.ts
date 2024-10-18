@@ -1,9 +1,9 @@
 import { db } from "@/server/db";
-import { users } from "@/server/db/schema";
 import { UserWebhookEvent, WebhookEventType } from "@clerk/nextjs/server";
 import { UserJSON } from "@clerk/types";
 import { updateUser } from "./userDbFn";
 import { profile } from "console";
+import { schema } from "@/server/db/schema";
 
 export const runtime = "nodejs";
 export async function POST(req: Request) {
@@ -18,7 +18,7 @@ export async function POST(req: Request) {
         (ea) => ea.id === data.primary_email_address_id,
       );
       const user = await db
-        .insert(users)
+        .insert(schema.users)
         .values({
           userId: userId,
           username: data.username ?? "",
@@ -28,7 +28,7 @@ export async function POST(req: Request) {
           emailStatus: userEmailAddress?.verification?.status ?? "",
           profile: data.image_url,
         })
-        .returning({ insertedId: users.userId });
+        .returning({ insertedId: schema.users.userId });
 
       console.log(`User ${user[0]?.insertedId} created!`);
       break;
